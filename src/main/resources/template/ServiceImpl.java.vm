@@ -47,8 +47,10 @@ import java.util.Map;
  */
 @Service
 public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
+
     @Autowired
     private ${className}Redis ${classname}Redis;
+
 
     @Override
     public PageData<${className}DTO> page(Map<String, Object> params) {
@@ -60,12 +62,14 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
         return getPageData(page, ${className}DTO.class);
     }
 
+
     @Override
     public List<${className}DTO> list(Map<String, Object> params) {
         List<${className}Entity> entityList = baseDao.selectList(getWrapper(params));
 
         return ConvertUtils.sourceToTarget(entityList, ${className}DTO.class);
     }
+
 
     private QueryWrapper<${className}Entity> getWrapper(Map<String, Object> params){
         String id = (String)params.get("id");
@@ -77,12 +81,14 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
         return wrapper;
     }
 
+
     @Override
     public ${className}DTO get(String id) {
         ${className}Entity entity = baseDao.selectById(id);
 
         return ConvertUtils.sourceToTarget(entity, ${className}DTO.class);
     }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -92,6 +98,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
         insert(entity);
     }
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(${className}DTO dto) {
@@ -100,14 +107,15 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
         updateById(entity);
     }
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(String[] ids) {
         //逻辑删除
-        //logicDelete(ids, ${className}Entity.class);
+        logicDelete(ids, ${className}Entity.class);
 
         //物理删除
-        baseDao.deleteBatchIds(Arrays.asList(ids));
+        //baseDao.deleteBatchIds(Arrays.asList(ids));
     }
 
 }

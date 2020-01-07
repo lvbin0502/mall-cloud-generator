@@ -41,14 +41,16 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper=false)
 @TableName("${tableName}")
 public class ${className}Entity extends BaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-#if($column.columnName != 'id' && $column.columnName != 'creator' && $column.columnName != 'create_date')
+#if($column.columnName != 'id' && $column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
     /**
      * $column.comments
      */
 	private $column.attrType $column.attrname;
 #end
+
 #end
 }

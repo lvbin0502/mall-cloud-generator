@@ -3,11 +3,4 @@
 
 <mapper namespace="${package}.dao.${className}Dao">
 
-    <resultMap type="${package}.entity.${className}Entity" id="${classname}Map">
-#foreach($column in $columns)
-        <result property="${column.attrname}" column="${column.columnName}"/>
-#end
-    </resultMap>
-
-
 </mapper>

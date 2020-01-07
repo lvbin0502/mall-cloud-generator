@@ -33,9 +33,11 @@ import java.util.Date;
  */
 @Data
 public class ${className}Excel {
+
 #foreach ($column in $columns)
     @Excel(name = "$!column.comments")
     private $column.attrType $column.attrname;
+	
 #end
 
 }

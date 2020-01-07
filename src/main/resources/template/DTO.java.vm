@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 @Data
 @ApiModel(value = "${comments}")
 public class ${className}DTO implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
