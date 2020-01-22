@@ -37,11 +37,11 @@ public interface ${className}Service extends BaseService<${className}Entity> {
 
     List<${className}DTO> list(Map<String, Object> params);
 
-    ${className}DTO get(String id);
+    ${className}DTO get(Long id);
 
     void save(${className}DTO dto);
 
     void update(${className}DTO dto);
 
-    void delete(String[] ids);
+    void delete(Long[] ids);
 }

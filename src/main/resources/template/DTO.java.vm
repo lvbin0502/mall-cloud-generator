@@ -41,8 +41,10 @@ public class ${className}DTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
+#if($column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
 	@ApiModelProperty(value = "$column.comments")
 	private $column.attrType $column.attrname;
 
+#end
 #end
 }

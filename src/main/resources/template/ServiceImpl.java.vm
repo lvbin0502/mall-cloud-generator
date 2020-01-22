@@ -83,7 +83,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
 
 
     @Override
-    public ${className}DTO get(String id) {
+    public ${className}DTO get(Long id) {
         ${className}Entity entity = baseDao.selectById(id);
 
         return ConvertUtils.sourceToTarget(entity, ${className}DTO.class);
@@ -110,7 +110,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(String[] ids) {
+    public void delete(Long[] ids) {
         //逻辑删除
         logicDelete(ids, ${className}Entity.class);
 
