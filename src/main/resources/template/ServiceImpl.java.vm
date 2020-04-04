@@ -19,18 +19,17 @@ package ${package}.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import ${main}.commons.mybatis.enums.DelFlagEnum;
 import ${main}.commons.mybatis.service.impl.BaseServiceImpl;
-import ${main}.commons.tools.exception.RenException;
+import com.mall.commons.mybatis.utils.QueryWrapperBuilder;
 import ${main}.commons.tools.page.PageData;
+import ${main}.commons.tools.constant.Constant;
 import ${main}.commons.tools.utils.ConvertUtils;
 import ${package}.dao.${className}Dao;
 import ${package}.dto.${className}DTO;
 import ${package}.entity.${className}Entity;
-import ${package}.exception.ModuleErrorCode;
 import ${package}.redis.${className}Redis;
 import ${package}.service.${className}Service;
-import org.apache.commons.lang3.StringUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +45,7 @@ import java.util.Map;
  * @since ${version} ${date}
  */
 @Service
+@Log4j2
 public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
 
     @Autowired
@@ -71,14 +71,10 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
     }
 
 
-    private QueryWrapper<${className}Entity> getWrapper(Map<String, Object> params){
-        String id = (String)params.get("id");
-
-        QueryWrapper<${className}Entity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(id), "id", id);
-        //wrapper.eq(Constant.DEL_FLAG, DelFlagEnum.NORMAL.value());
-
-        return wrapper;
+    private QueryWrapper getWrapper(Map<String, Object> params){
+        return new QueryWrapperBuilder<${className}Entity>(params)
+                .eq("id", "id")
+                .build();
     }
 
 
@@ -112,10 +108,10 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long[] ids) {
         //逻辑删除
-        logicDelete(ids, ${className}Entity.class);
+        //logicDelete(ids, ${className}Entity.class);
 
-        //物理删除
-        //baseDao.deleteBatchIds(Arrays.asList(ids));
+        //物理删除(框架层面会统一做逻辑删除)
+        baseDao.deleteBatchIds(Arrays.asList(ids));
     }
 
 }

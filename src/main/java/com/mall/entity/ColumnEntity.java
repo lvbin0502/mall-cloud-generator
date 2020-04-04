@@ -12,6 +12,8 @@ public class ColumnEntity {
     private String columnName;
     //列名类型
     private String dataType;
+    //是否允许为空
+    private Boolean nullable;
     //列名备注
     private String comments;
     
@@ -36,6 +38,15 @@ public class ColumnEntity {
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
+
+	public Boolean getNullable() {
+		return nullable;
+	}
+
+	public void setNullable(Boolean nullable) {
+		this.nullable = nullable;
+	}
+
 	public String getComments() {
 		return comments;
 	}

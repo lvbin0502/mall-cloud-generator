@@ -9,9 +9,12 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     #MySQL配置
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.99.142.251:3306/mall-cloud-dev?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&&useSSL=false
+#    url: jdbc:mysql://39.99.142.251:3306/mall-cloud-dev?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&&useSSL=false
+#    username: root
+#    password: sytX2018!
+    url: jdbc:mysql://39.108.113.190:3306/mall-cloud-dev?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&&useSSL=false
     username: root
-    password: cloud-mall
+    password: 716startY
     #oracle配置
 #    driverClassName: oracle.jdbc.OracleDriver
 #    url: jdbc:oracle:thin:@192.168.10.10:1521:helowin

@@ -17,12 +17,16 @@
 
 package ${package}.dto;
 
+import com.mall.commons.tools.validator.group.DefaultGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -42,7 +46,16 @@ public class ${className}DTO implements Serializable {
 
 #foreach ($column in $columns)
 #if($column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
+#if($column.nullable == false && $column.columnName != 'id')
+	@ApiModelProperty(value = "$column.comments", required = true)
+#if($column.dataType == 'varchar')
+	@NotEmpty(message = "$column.comments 不能为空", groups = DefaultGroup.class)
+#else
+	@NotNull(message = "$column.comments 不能为空", groups = DefaultGroup.class)
+#end
+#else
 	@ApiModelProperty(value = "$column.comments")
+#end
 	private $column.attrType $column.attrname;
 
 #end
