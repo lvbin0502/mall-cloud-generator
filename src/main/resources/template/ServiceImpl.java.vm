@@ -20,10 +20,15 @@ package ${package}.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import ${main}.commons.mybatis.service.impl.BaseServiceImpl;
-import com.mall.commons.mybatis.utils.QueryWrapperBuilder;
+import ${main}.commons.mybatis.utils.QueryWrapperBuilder;
 import ${main}.commons.tools.page.PageData;
 import ${main}.commons.tools.constant.Constant;
 import ${main}.commons.tools.utils.ConvertUtils;
+import ${main}.commons.tools.validator.AssertUtils;
+import ${main}.commons.tools.validator.ValidatorUtils;
+import ${main}.commons.tools.validator.group.AddGroup;
+import ${main}.commons.tools.validator.group.UpdateGroup;
+import ${main}.commons.tools.validator.group.DefaultGroup;
 import ${package}.dao.${className}Dao;
 import ${package}.dto.${className}DTO;
 import ${package}.entity.${className}Entity;
@@ -89,8 +94,10 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void save(${className}DTO dto) {
-        ${className}Entity entity = ConvertUtils.sourceToTarget(dto, ${className}Entity.class);
+        //效验数据
+        ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
+        ${className}Entity entity = ConvertUtils.sourceToTarget(dto, ${className}Entity.class);
         insert(entity);
     }
 
@@ -98,8 +105,10 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(${className}DTO dto) {
-        ${className}Entity entity = ConvertUtils.sourceToTarget(dto, ${className}Entity.class);
+        //效验数据
+        ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
+        ${className}Entity entity = ConvertUtils.sourceToTarget(dto, ${className}Entity.class);
         updateById(entity);
     }
 
@@ -107,6 +116,9 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long[] ids) {
+        //效验数据
+        AssertUtils.isArrayEmpty(ids, "id");
+
         //逻辑删除
         //logicDelete(ids, ${className}Entity.class);
 

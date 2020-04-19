@@ -14,6 +14,8 @@ public class ColumnEntity {
     private String dataType;
     //是否允许为空
     private Boolean nullable;
+    // 是否默认值
+    private Boolean defaultValue;
     //列名备注
     private String comments;
     
@@ -45,6 +47,14 @@ public class ColumnEntity {
 
 	public void setNullable(Boolean nullable) {
 		this.nullable = nullable;
+	}
+
+	public Boolean getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(Boolean defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
 	public String getComments() {

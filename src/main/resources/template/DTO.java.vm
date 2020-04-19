@@ -46,7 +46,7 @@ public class ${className}DTO implements Serializable {
 
 #foreach ($column in $columns)
 #if($column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
-#if($column.nullable == false && $column.columnName != 'id')
+#if($column.nullable == false && $column.columnName != 'id' && $column.defaultValue == false)
 	@ApiModelProperty(value = "$column.comments", required = true)
 #if($column.dataType == 'varchar')
 	@NotEmpty(message = "$column.comments 不能为空", groups = DefaultGroup.class)

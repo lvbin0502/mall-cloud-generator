@@ -83,6 +83,7 @@ public class GenUtils {
 			columnEntity.setColumnName(column.get("columnName"));
 			columnEntity.setDataType(column.get("dataType"));
 			columnEntity.setNullable("YES".equals(column.get("nullable")));
+			columnEntity.setDefaultValue(StringUtils.isNotBlank(column.get("defaultValue")));
 			columnEntity.setComments(column.get("columnComment"));
 			columnEntity.setExtra(column.get("extra"));
 			

@@ -50,7 +50,7 @@ import java.util.Map;
  * @since ${version} ${date}
  */
 @RestController
-@RequestMapping("${moduleName}/${pathName}")
+@RequestMapping("${pathName}")
 @Api(tags="${comments}")
 public class ${className}Controller {
 
@@ -59,7 +59,7 @@ public class ${className}Controller {
 
 
     @GetMapping("page")
-    @ApiOperation("分页")
+    @ApiOperation("分页查询")
     @ApiImplicitParams({
         @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType="int") ,
         @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query",required = true, dataType="int") ,
@@ -73,8 +73,8 @@ public class ${className}Controller {
     }
 
 
-    @GetMapping("{id}")
-    @ApiOperation("信息")
+    @GetMapping("detail/{id}")
+    @ApiOperation("详情")
     public Result<${className}DTO> get(@PathVariable("id") String id){
         ${className}DTO data = ${classname}Service.get(Long.valueOf(id));
 
@@ -82,31 +82,23 @@ public class ${className}Controller {
     }
 
 
-    @PostMapping
+    @PostMapping("save")
     @ApiOperation("保存")
     public Result save(@RequestBody ${className}DTO dto){
-        //效验数据
-        ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
-
         ${classname}Service.save(dto);
-
         return new Result();
     }
 
 
-    @PutMapping
+    @PutMapping("update")
     @ApiOperation("修改")
     public Result update(@RequestBody ${className}DTO dto){
-        //效验数据
-        ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
-
         ${classname}Service.update(dto);
-
         return new Result();
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("delete")
     @ApiOperation("删除")
     public Result delete(@RequestBody String[] ids){
         //效验数据
