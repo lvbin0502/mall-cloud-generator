@@ -18,6 +18,8 @@ public class ColumnEntity {
     private Boolean nullable;
     // 是否默认值
     private Boolean defaultValue;
+	// 是否图片
+	private Boolean isPic;
     //列名备注
     private String comments;
     
@@ -65,6 +67,14 @@ public class ColumnEntity {
 
 	public void setDefaultValue(Boolean defaultValue) {
 		this.defaultValue = defaultValue;
+	}
+
+	public Boolean getIsPic() {
+		return isPic;
+	}
+
+	public void setIsPic(Boolean pic) {
+		isPic = pic;
 	}
 
 	public String getComments() {

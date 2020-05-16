@@ -18,8 +18,17 @@
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
 #foreach($column in $columns)
+## 默认字段不展示、长度超过120不展示
 #if($column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
-    <el-table-column prop="${column.attrname}" label="${column.comments}" header-align="center" align="center"></el-table-column>
+#if($column.isPic == true)
+        <el-table-column prop="${column.attrname}" label="${column.comments}" header-align="center" align="center">
+          <template slot-scope="scope">
+            <el-image fit="scale-down" :src="scope.row.${column.attrname}" style="width: 100px;height: 100px;"></el-image>
+          </template>
+        </el-table-column>
+#elseif($column.dataType != 'varchar' || ($column.dataType == 'varchar' && $column.length < 120))
+        <el-table-column prop="${column.attrname}" label="${column.comments}" header-align="center" align="center"></el-table-column>
+#end
 #end
 #end
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">

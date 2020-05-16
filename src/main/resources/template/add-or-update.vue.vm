@@ -1,12 +1,21 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.${pk.attrname} ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
+  <el-dialog :visible.sync="visible" :title="!dataForm.${pk.attrname} ? $t('add') : (disabledEdit ? $t('detail') : $t('update'))" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
 #foreach($column in $columns)
-  #if($column.columnName != $pk.columnName && $column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
-      <el-form-item label="${column.comments}" prop="${column.attrname}">
-          <el-input v-model="dataForm.${column.attrname}" placeholder="${column.comments}"></el-input>
+#if($column.columnName != $pk.columnName && $column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
+      <el-form-item label="${column.comments}" #if($column.nullable == false) prop="${column.attrname}" #end>
+#if($column.isPic == true)
+          <el-row type="flex" align="middle">
+            <el-image style="width: 100px;height: 100px;" :src="dataForm.${column.attrname}" fit="scale-down"></el-image>
+            <div v-show="!disabledEdit" style="margin-left: 10px"><tk-single-upload @input="ossUrl" /></div>
+          </el-row>
+#elseif($column.dataType == 'varchar' && $column.length > 120)
+          <el-input v-model="dataForm.${column.attrname}" placeholder="${column.comments}" :disabled="disabledEdit" type="textarea"></el-input>
+#else
+          <el-input v-model="dataForm.${column.attrname}" placeholder="${column.comments}" :disabled="disabledEdit"></el-input>
+#end
       </el-form-item>
-  #end
+#end
 #end
     </el-form>
     <template slot="footer">
@@ -18,35 +27,38 @@
 
 <script>
 import debounce from 'lodash/debounce'
+import TkSingleUpload from '@/components/upload/singleUpload'
 export default {
   data () {
     return {
       visible: false,
+      disabledEdit: true, // 是否可编辑
       dataForm: {
 #foreach($column in $columns)
+#if($column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
         ${column.attrname}: ''#if($velocityCount != $columns.size()),#end
 
+#end
 #end
       }
     }
   },
+  components: {TkSingleUpload},
   computed: {
     dataRule () {
       return {
 #foreach($column in $columns)
-#if($column.columnName != $pk.columnName)
-        ${column.attrname}: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ]#if($velocityCount != $columns.size()),#end
-
+#if($column.columnName != $pk.columnName && $column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag' && $column.nullable == false && $column.nullable == false)
+          ${column.attrname}: [{ required: true, message: this.$t('validate.required'), trigger: 'blur' }],
 #end
 #end
       }
     }
   },
   methods: {
-    init () {
+    init (isRead ) {
       this.visible = true
+      this.disabledEdit = isRead
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
         if (this.dataForm.${pk.attrname}) {
@@ -54,9 +66,12 @@ export default {
         }
       })
     },
+    ossUrl(url) {
+      this.dataForm.picOrigin = url;
+    },
     // 获取信息
     getInfo () {
-      #[[this.$http.get(]]#`/${moduleName}/${pathName}/#[[${]]#this.dataForm.${pk.attrname}}`).then(({ data: res }) => {
+      #[[this.$http.get(]]#`/${moduleName}/${pathName}/detail/#[[${]]#this.dataForm.${pk.attrname}}`).then(({ data: res }) => {
         if (res.code !== 0) {
           #[[return this.$message.error(res.msg)]]#
         }
@@ -72,7 +87,8 @@ export default {
         if (!valid) {
           return false
         }
-        #[[this.$http]]#[!this.dataForm.${pk.attrname} ? 'post' : 'put']('/${moduleName}/${pathName}/', this.dataForm).then(({ data: res }) => {
+      let type = !this.dataForm.id ? 'save' : 'update';
+      #[[this.$http]]#[!this.dataForm.${pk.attrname} ? 'post' : 'put']('/${moduleName}/${pathName}/'  + type, this.dataForm).then(({ data: res }) => {
           if (res.code !== 0) {
             #[[return this.$message.error(res.msg)]]#
           }

@@ -89,6 +89,7 @@ public class GenUtils {
 			columnEntity.setDefaultValue(column.get("defaultValue") != null);
 			columnEntity.setComments((String)column.get("columnComment"));
 			columnEntity.setExtra((String)column.get("extra"));
+			columnEntity.setIsPic(isPic(columnEntity));
 			
 			//列名转换成Java属性名
 			String attrName = columnToJava(columnEntity.getColumnName());
@@ -171,8 +172,13 @@ public class GenUtils {
 			}
 		}
 	}
-	
-	
+
+	private static Boolean isPic(ColumnEntity columnEntity) {
+		return columnEntity.getColumnName().endsWith("pic") || columnEntity.getColumnName().endsWith("pics")
+				|| columnEntity.getColumnName().endsWith("logo") || columnEntity.getComments().contains("图");
+	}
+
+
 	/**
 	 * 列名转换成Java属性名
 	 */
