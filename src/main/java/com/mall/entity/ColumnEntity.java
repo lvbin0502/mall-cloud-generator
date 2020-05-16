@@ -12,6 +12,8 @@ public class ColumnEntity {
     private String columnName;
     //列名类型
     private String dataType;
+    // 字段长度
+    private Long length;
     //是否允许为空
     private Boolean nullable;
     // 是否默认值
@@ -39,6 +41,14 @@ public class ColumnEntity {
 	}
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
+	}
+
+	public Long getLength() {
+		return length;
+	}
+
+	public void setLength(Long length) {
+		this.length = length;
 	}
 
 	public Boolean getNullable() {

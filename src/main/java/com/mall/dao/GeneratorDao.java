@@ -30,5 +30,5 @@ public interface GeneratorDao {
 
     Map<String, String> queryTable(String tableName);
 
-    List<Map<String, String>> queryColumns(String tableName);
+    List<Map<String, Object>> queryColumns(String tableName);
 }

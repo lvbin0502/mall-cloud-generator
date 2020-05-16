@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="visible" :title="!dataForm.${pk.attrname} ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
 #foreach($column in $columns)
-  #if($column.columnName != $pk.columnName)
+  #if($column.columnName != $pk.columnName && $column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
       <el-form-item label="${column.comments}" prop="${column.attrname}">
           <el-input v-model="dataForm.${column.attrname}" placeholder="${column.comments}"></el-input>
       </el-form-item>

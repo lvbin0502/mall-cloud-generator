@@ -38,7 +38,7 @@ public class SysGeneratorService {
 		return generatorDao.queryTable(tableName);
 	}
 
-	public List<Map<String, String>> queryColumns(String tableName) {
+	public List<Map<String, Object>> queryColumns(String tableName) {
 		return generatorDao.queryColumns(tableName);
 	}
 
@@ -50,7 +50,7 @@ public class SysGeneratorService {
 			//查询表信息
 			Map<String, String> table = queryTable(tableName);
 			//查询列信息
-			List<Map<String, String>> columns = queryColumns(tableName);
+			List<Map<String, Object>> columns = queryColumns(tableName);
 			//生成代码
 			GenUtils.generatorCode(table, columns, zip);
 		}

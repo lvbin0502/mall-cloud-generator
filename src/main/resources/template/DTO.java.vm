@@ -27,6 +27,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -50,6 +51,7 @@ public class ${className}DTO implements Serializable {
 	@ApiModelProperty(value = "$column.comments", required = true)
 #if($column.dataType == 'varchar')
 	@NotEmpty(message = "$column.comments 不能为空", groups = DefaultGroup.class)
+    @Size(message = "$column.comments 长度不能超过$column.length", max = $column.length, groups = DefaultGroup.class)
 #else
 	@NotNull(message = "$column.comments 不能为空", groups = DefaultGroup.class)
 #end

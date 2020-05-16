@@ -31,6 +31,7 @@ import org.apache.velocity.app.Velocity;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -63,7 +64,7 @@ public class GenUtils {
 	 * 生成代码
 	 */
 	public static void generatorCode(Map<String, String> table,
-			List<Map<String, String>> columns, ZipOutputStream zip){
+			List<Map<String, Object>> columns, ZipOutputStream zip){
 		//配置信息
 		Configuration config = getConfig();
 		boolean hasBigDecimal = false;
@@ -78,14 +79,16 @@ public class GenUtils {
 		
 		//列信息
 		List<ColumnEntity> columsList = new ArrayList<>();
-		for(Map<String, String> column : columns){
+		for(Map<String, Object> column : columns){
 			ColumnEntity columnEntity = new ColumnEntity();
-			columnEntity.setColumnName(column.get("columnName"));
-			columnEntity.setDataType(column.get("dataType"));
+			columnEntity.setColumnName((String)column.get("columnName"));
+			columnEntity.setDataType((String)column.get("dataType"));
+			BigInteger len = (BigInteger) column.get("length");
+			columnEntity.setLength(len == null ? null : len.longValue());
 			columnEntity.setNullable("YES".equals(column.get("nullable")));
-			columnEntity.setDefaultValue(StringUtils.isNotBlank(column.get("defaultValue")));
-			columnEntity.setComments(column.get("columnComment"));
-			columnEntity.setExtra(column.get("extra"));
+			columnEntity.setDefaultValue(column.get("defaultValue") != null);
+			columnEntity.setComments((String)column.get("columnComment"));
+			columnEntity.setExtra((String)column.get("extra"));
 			
 			//列名转换成Java属性名
 			String attrName = columnToJava(columnEntity.getColumnName());
@@ -99,7 +102,7 @@ public class GenUtils {
 				hasBigDecimal = true;
 			}
 			//是否主键
-			if("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null){
+			if("PRI".equalsIgnoreCase((String)column.get("columnKey")) && tableEntity.getPk() == null){
 				tableEntity.setPk(columnEntity);
 			}
 			
