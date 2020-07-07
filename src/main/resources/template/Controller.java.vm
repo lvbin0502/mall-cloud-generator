@@ -17,6 +17,7 @@
 
 package ${package}.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.mall.commons.tools.constant.Constant;
 import ${main}.commons.tools.page.PageData;
 import ${main}.commons.tools.utils.ConvertUtils;
@@ -83,7 +84,8 @@ public class ${className}Controller {
 
 
     @PostMapping("save")
-    @ApiOperation("保存")
+    @ApiOperation("新增")
+    @ApiOperationSupport(ignoreParameters = {"dto.id"})
     public Result save(@RequestBody ${className}DTO dto){
         ${classname}Service.save(dto);
         return new Result();

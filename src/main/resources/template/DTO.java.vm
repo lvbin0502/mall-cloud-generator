@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -46,15 +46,22 @@ public class ${className}DTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
+## 排除默认字段
 #if($column.columnName != 'creator' && $column.columnName != 'create_time' && $column.columnName != 'updator' && $column.columnName != 'update_time' && $column.columnName != 'del_flag')
+## 非空字段注解
 #if($column.nullable == false && $column.columnName != 'id' && $column.defaultValue == false)
 	@ApiModelProperty(value = "$column.comments", required = true)
 #if($column.dataType == 'varchar')
-	@NotEmpty(message = "$column.comments 不能为空", groups = DefaultGroup.class)
+	@NotBlank(message = "$column.comments 不能为空", groups = DefaultGroup.class)
     @Size(message = "$column.comments 长度不能超过$column.length", max = $column.length, groups = DefaultGroup.class)
 #else
 	@NotNull(message = "$column.comments 不能为空", groups = DefaultGroup.class)
 #end
+## 主键注解
+#elseif($column.columnName == 'id')
+	@ApiModelProperty(value = "$column.comments")
+	@NotNull(message = "$column.comments 不能为空", groups = UpdateGroup.class)
+## 可空字段注解
 #else
 	@ApiModelProperty(value = "$column.comments")
 #end

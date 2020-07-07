@@ -17,6 +17,7 @@
 
 package ${package}.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import ${main}.commons.mybatis.service.impl.BaseServiceImpl;
@@ -80,6 +81,13 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${
         return new QueryWrapperBuilder<${className}Entity>(params)
                 .eq("id", "id")
                 .build();
+    }
+
+
+    private LambdaQueryWrapper<${className}Entity> getWrapper(Long id) {
+        LambdaQueryWrapper<${className}Entity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(id != null, ${className}Entity::getId, id);
+        return queryWrapper;
     }
 
 
